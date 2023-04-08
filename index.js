@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
+const inmueble = require('./routes/inmueble.route')
 
 app.use(express.json())
+app.use('/api/inmuebles/', inmueble)
 
 const port = process.env.PORT || 3000
 
