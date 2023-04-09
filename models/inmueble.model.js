@@ -46,8 +46,7 @@ const inmuebleSchema = new mongoose.Schema({
 		lowercase: true,
 		trim: true,
 		minLength: 6,
-		maxLength: 100,
-		unique: true
+		maxLength: 100
 	}
 },
 	{
