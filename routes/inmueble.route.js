@@ -30,7 +30,7 @@ router.post(
 	body('extension')
 		.isInt()
 		.notEmpty().withMessage('Por favor introduzca un valor númerico')
-		.isLength({ min: 60, max: 100 }).withMessage('Introduzca un valor entre 60 y 100'),
+		.isLength({ min: 2, max: 3 }).withMessage('Introduzca un valor entre 60 y 100'),
 	body('habitaciones')
 		.isInt()
 		.notEmpty()
@@ -47,6 +47,7 @@ router.post(
 	body('emailContacto')
 		.trim()
 		.notEmpty().withMessage('El campo email es obligatorio')
+		.isLength({ min: 6, max: 100 }).withMessage('El email ha de tener entre 6 y 100 caracteres')
 		.isEmail().withMessage('Por favor introduzca una dirección de email valida'),
 	async (req, res) => {
 		const errors = validationResult(req)
@@ -66,6 +67,7 @@ router.post(
 
 		const resultado = await inmueble.save()
 		res.status(201).send(resultado)
-	})
+	}
+)
 
 module.exports = router

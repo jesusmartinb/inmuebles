@@ -45,9 +45,14 @@ const inmuebleSchema = new mongoose.Schema({
 		required: true,
 		lowercase: true,
 		trim: true,
-		maxLength: 100
+		minLength: 6,
+		maxLength: 100,
+		unique: true
 	}
-})
+},
+	{
+		timestamps: true
+	})
 
 const Inmueble = mongoose.model('inmueble', inmuebleSchema)
 
