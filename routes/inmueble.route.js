@@ -2,6 +2,7 @@ const express = require('express')
 const Inmueble = require('../models/inmueble.model')
 const router = express.Router()
 const { body, validationResult } = require('express-validator');
+const { isValidObjectId } = require('mongoose');
 
 router.get('/', async (req, res) => {
 	const inmuebles = await Inmueble.find()
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-	const inmueble = await Inmueble.findById(req.params.id)
+	const inmueble = await Inmueble.findById(isValidObjectId(req.params.id) ? req.params.id : null)
 	if (!inmueble) return res.status(404).send('No hemos encontrado ningún inmueble con ese ID')
 
 	res.send(inmueble)
