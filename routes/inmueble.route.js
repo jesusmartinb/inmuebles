@@ -129,6 +129,18 @@ router.put(
 		}
 
 		res.status(204).send()
-	})
+	}
+)
+
+router.delete('/:id', async (req, res) => {
+
+	const inmueble = await Inmueble.findByIdAndDelete(isValidObjectId(req.params.id) ? req.params.id : null)
+
+	if (!inmueble) {
+		return res.status(404).send('El inmueble con ese ID no existe, no se puede borrar')
+	}
+
+	res.status(200).send('Inmueble borrado')
+})
 
 module.exports = router
