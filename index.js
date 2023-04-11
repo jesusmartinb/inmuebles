@@ -1,15 +1,24 @@
-const mongoose = require('mongoose')
+// Importamos conexión a base datos
+const connection = require('./database/connection')
+
+// Importar dependencias
 const express = require('express')
+
+// Ejecutar conexión a base datos
+connection()
+
+// Crear servidor de node
 const app = express()
-const inmueble = require('./routes/inmueble.route')
-
-app.use(express.json())
-app.use('/api/inmuebles/', inmueble)
-
 const port = process.env.PORT || 3000
 
-app.listen(port, () => console.log('Escuchando en el puerto: ' + port))
+// Convertir los datos del body a objetos js
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-mongoose.connect('mongodb://127.0.0.1:27017/inmueblesUnir')
-	.then(() => console.log('Conectado a MongoDB'))
-	.catch((error) => console.log('No se ha conectado a MongoDB'))
+// Cargar configuración de rutas
+const inmueble = require('./routes/inmueble.route')
+
+app.use('/api/inmuebles/', inmueble)
+
+// Poner el servidor a escuchar peticiones http
+app.listen(port, () => console.log('Escuchando en el puerto: ' + port))
