@@ -24,18 +24,38 @@ const register = async (req, res) => {
 		return res.status(422).json({ errors: errors.array() })
 	}
 
-	const inmueble = new Inmueble({
-		piso: req.body.piso,
-		letra: req.body.letra,
-		extension: req.body.extension,
-		habitaciones: req.body.habitaciones,
-		alquilado: req.body.alquilado,
-		nombrePropietario: req.body.nombrePropietario,
-		emailContacto: req.body.emailContacto
+	// Recoger datos de la petición
+	let params = req.body
+
+	// Control de pisos duplicados
+	Inmueble.find({
+		$and: [
+			{ piso: params.piso },
+			{ letra: params.letra.toUpperCase() }
+		]
+	}).then(async (inmuebles) => {
+
+		if (inmuebles && inmuebles.length >= 1) {
+			return res.status(200).send({
+				status: "error",
+				message: 'El inmueble ya está registrado'
+			})
+		} else {
+			const inmueble = new Inmueble({
+				piso: req.body.piso,
+				letra: req.body.letra,
+				extension: req.body.extension,
+				habitaciones: req.body.habitaciones,
+				alquilado: req.body.alquilado,
+				nombrePropietario: req.body.nombrePropietario,
+				emailContacto: req.body.emailContacto
+			})
+
+			const resultado = await inmueble.save()
+			res.status(201).send(resultado)
+		}
 	})
 
-	const resultado = await inmueble.save()
-	res.status(201).send(resultado)
 }
 
 // Actualizar un registro

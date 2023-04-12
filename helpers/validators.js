@@ -3,26 +3,26 @@ const { body } = require('express-validator')
 const toCheck = () => {
 	return [
 		body('piso')
-			.isInt()
+			.isInt({ min: 1, max: 4 }).withMessage('Por favor introduzca un número de piso entre 1 y 4')
 			.notEmpty().withMessage('Por favor introduzca el número de piso')
-			.trim()
-			.isLength({ min: 1, max: 1 }).withMessage('Escriba un número entre 1 y 4'),
+			.trim(),
 		body('letra')
-			.isString().withMessage('Escriba letras de la A a la D')
+			.isString().withMessage('Escriba una letras de la A a la D')
+			.isIn(["A", "B", "C", "D", "a", "b", "c", "d"]).withMessage('Escriba una letras de la A a la D')
 			.notEmpty()
 			.trim()
 			.isLength({ min: 1, max: 1 }).withMessage('Escoja entre A B C D'),
 		body('extension')
-			.isInt()
+			.isInt({ min: 60, max: 100 }).withMessage('Introduzca un valor entre 60 y 100')
 			.notEmpty().withMessage('Por favor introduzca un valor númerico')
 			.isLength({ min: 2, max: 3 }).withMessage('Introduzca un valor entre 60 y 100'),
 		body('habitaciones')
-			.isInt()
+			.isInt({ min: 2, max: 4 }).withMessage('Escriba un número entre 2 y 4')
 			.notEmpty()
-			.trim()
-			.isLength({ min: 1, max: 1 }).withMessage('Escriba un número entre 2 y 4'),
+			.trim(),
 		body('alquilado')
-			.isBoolean().withMessage('Por favor escriba "yes" o "no"'),
+			.isBoolean({ loose: true })
+			.isIn(["yes", "no", true, false]).withMessage('Por favor escriba "yes", "no", true o false'),
 		body('nombrePropietario')
 			.isString()
 			.notEmpty().withMessage('Escriba el nombre del propietario')
