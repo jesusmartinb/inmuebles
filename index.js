@@ -1,15 +1,21 @@
+// Importamos configuraciones
+const config = require('./config/index.config')
+
 // Importamos conexión a base datos
 const connection = require('./database/connection')
 
 // Importar dependencias
 const express = require('express')
 
+// Config .env
+// require('dotenv').config();
+
 // Ejecutar conexión a base datos
-connection()
+connection(config.database)
 
 // Crear servidor de node
 const app = express()
-const port = process.env.PORT || 3000
+const { port } = config.server
 
 // Convertir los datos del body a objetos js
 app.use(express.json())

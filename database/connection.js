@@ -2,9 +2,18 @@
 const mongoose = require('mongoose')
 
 // Método de conexión
-const connection = async () => {
+const connection = async ({ protocol, url, username = '', password = '' }) => {
+	let dburl = '';
+
+	// Require auth
+	if (username && password) {
+		dburl = `${protocol}://${username}:${password}@${url}`
+	} else {
+		dburl = `${protocol}://${url}`
+	}
+
 	try {
-		await mongoose.connect('mongodb://127.0.0.1:27017/inmueblesUnir')
+		await mongoose.connect(dburl)
 		console.log('Conectado a MongoDB')
 	} catch (error) {
 		console.log(error)
