@@ -3,10 +3,39 @@ const Inmueble = require('../models/inmueble.model')
 const { validationResult } = require('express-validator');
 const { isValidObjectId } = require('mongoose');
 
-// Obtener todos los registros
+// Obtener todos los registros paginados o no
 const all = async (req, res) => {
-	const inmuebles = await Inmueble.find()
-	res.send(inmuebles)
+
+	// opciones de paginación
+	const options = {
+		sort: { piso: 'asc', letra: 'asc' },
+		page: 1,
+		limit: 4,
+	}
+
+	if (req.params.page) {
+		options.page = req.params.page
+	}
+
+	// Encontrar los inmuebles, ordenarlos y paginarlos
+	Inmueble
+		.paginate({}, options, (error, inmuebles) => {
+
+			if (error || !inmuebles) {
+				return res.status(404).send({
+					status: "error",
+					message: "No se han encontrado inmuebles"
+				})
+			}
+
+			return res.status(200).send({
+				status: "succces",
+				message: "Listado de inmuebles",
+				inmuebles
+			})
+
+		})
+
 }
 
 // Obtener un registro por ID

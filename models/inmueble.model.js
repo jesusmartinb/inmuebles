@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const inmuebleSchema = new mongoose.Schema({
 	piso: {
@@ -52,6 +53,9 @@ const inmuebleSchema = new mongoose.Schema({
 	{
 		timestamps: true
 	})
+
+
+inmuebleSchema.plugin(mongoosePaginate)
 
 const Inmueble = mongoose.model('inmueble', inmuebleSchema)
 
